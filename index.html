@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>canvas</title>
+    <meta charset="utf-8">
+    <script src="Canvas.js"></script>
+    <script>
+        obj=[{"className":"component1","color":"#ff0000","description":"desc1","end":60,"layer":1,"start":-40,"visible":true,"width":90},
+            {"className":"component2","color":"#000000","description":"desc2","end":50,"layer":2,"start":10,"visible":true,"width":40},
+            {"className":"component3","color":"#ffffff","description":"desc3","end":20,"layer":3,"start":10,"visible":true,"width":15},
+            {"className":"component4","color":"#0000ff","description":"desc4","end":40,"layer":4,"start":20,"visible":true,"width":20},
+            {"className":"component5","color":"#808080","description":"desc5","end":30,"layer":5,"start":10,"visible":false,"width":20},
+            {"className":"component6","color":"#00ff00","description":"desc6","end":40,"layer":4,"start":20,"visible":false,"width":20}];
+    </script>
+</head>
+<style>
+    html, body {
+        width:  100%;
+        height: 100%;
+        margin: 0px;
+    }
+</style>
+<body>
+<div id="test"style="display: none;"><label id="testText"></label></div>
+<canvas id="myCanvas">
+    <script>init(obj);</script>
+</canvas>
+<div id="modal" style="display: none;position: absolute;z-index: 9999;border: 1px solid;color: rgb(255, 255, 255);background-color: rgb(0, 75, 82);">
+    <label id="modalTest" style="margin: 5px;"></label>
+</div>
+
+</body>
+</html>
