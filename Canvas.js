@@ -93,8 +93,8 @@ function Draw(objects){
             var dx =text.offsetWidth;
             var dy =text.offsetHeight;
 
-            context.strokeRect(80, start*k, dx+20,  dy+10);
-            context.fillText (name,85,start*k+5);
+            context.strokeRect(80, modalY+dy, dx+20,  dy+10);
+            context.fillText (name,85,modalY+dy+5);
             modalEndH = 100+dx;
             modalEndW = modalY;
             modalY = modalY + dy + 45;
