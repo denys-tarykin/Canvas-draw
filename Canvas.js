@@ -101,20 +101,20 @@ function Draw(objects){
               var new_y= buildAbout(context, start * k,modal_arr);
                 if(n% 2 === 0  ){
                     x = 80;
-                    context.moveTo(new_center,start*k);
-                    context.lineTo(x+dx+20,new_y);
+                    context.moveTo(new_center,h/2);
+                    context.lineTo(x+dx+20,h/2);
                 }
                 else{
                     x=800;
-                    context.moveTo(new_center+width,start*k);
-                    context.lineTo(x,new_y);
+                    context.moveTo(new_center+width,h/2);
+                    context.lineTo(x,h/2);
                 }
 
-                context.lineTo(x,new_y);
+                //context.lineTo(x,new_y);
 
-                context.strokeRect(x, new_y, dx+20,  dy+10);
+                context.strokeRect(x, h/2, dx+20,  dy+10);
                 context.fillStyle = '#000000';
-                context.fillText (name,x+5,new_y+5);
+                context.fillText (name,x+5,h/2+5);
 
                 about.setAboutStart(new_y);
                 about.setAboutEnd(new_y+dy);
