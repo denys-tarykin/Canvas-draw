@@ -32,14 +32,14 @@ function Draw(objects){
     var modalY =30;
     var modalEndW=0;
     var modalEndH=0;
+    var modal_arr = [];
+    var heights = [];
+
 
     this.draw = function(context){
         for(var j=0;j<objects.length;j++){
             obj = new DrawObj();
-            if(objects[j].end<0)
-                start=objects[j].start;
-            else
-                start =objects[j].end;
+            start =objects[j].start;
             obj.setStart(start);
             h = Math.abs(objects[j].end - objects[j].start);
             obj.setHeight(h);
@@ -48,62 +48,84 @@ function Draw(objects){
             obj.setDescription(objects[j].description);
             obj.setName(objects[j].className);
             obj_array[j] = obj;
-            checkParameters(objects[j].width,h,20);
-            if(objects[j].end>0)
-                setMaxH(start);
-            if(objects[j].start<0)
-                setMinH(objects[j].start);
-
+            checkParameters(objects[j].width,h,15);
+            setMaxH(objects[j].end);
         }
+
         context.font = 'italic 15px sans-serif';
         context.textBaseline = 'top';
         context.strokeStyle="#000000";
-        zero = MaxH*k;
+
         context.moveTo(20,0);
-        context.lineTo(20,zero);
-        context.moveTo(20,zero);
-        context.lineTo(900,zero);
-        context.fillText ("0",30,zero);
-        context.moveTo(20,zero);
-        context.lineTo(20,zero-MinH*k);
+        context.lineTo(900,0);
+        context.fillText ("0",30,0);
+        context.moveTo(20,0);
+        context.lineTo(20,MaxH*k);
 
         var length=obj_array.length;
         var modal = document.getElementById("test");
         var text = document.getElementById("testText");
+
         for(var n=0;n<length;n++){
             var width = parseInt(obj_array[n].getWidth())*k;
-            var start = MaxH-obj_array[n].getStart();
+            var start = obj_array[n].getStart();
             new_center = center-width/2;
             var  h =obj_array[n].getHeight()*k;
-            if(obj_array[n].getStart()!=0){
-                context.moveTo(20,start*k);
-                context.lineTo(35,start*k);
-                st = obj_array[n].getStart();
-                context.fillStyle = 'black';
-                    context.fillText (st,30,start*k);
-                if(n == length-1) {
-                    context.moveTo(20,start*k);
-                    context.lineTo(20,start*k+h);
-                }
+            if(heights.indexOf(obj_array[n].getHeight())==-1){
+                heights[n] = obj_array[n].getHeight();
+                context.moveTo(20, h);
+                context.lineTo(35, h);
+                context.fillStyle = '#000000';
+                context.fillText(obj_array[n].getHeight(), 30,h);
             }
+
 
             var name =obj_array[n].getName();
             text.textContent=name;
             modal.style.display='block';
             var dx =text.offsetWidth;
             var dy =text.offsetHeight;
-
-            context.strokeRect(80, modalY+dy, dx+20,  dy+10);
-            context.fillText (name,85,modalY+dy+5);
-            modalEndH = 100+dx;
-            modalEndW = modalY;
-            modalY = modalY + dy + 45;
             modal.style.display='none';
-            context.moveTo(new_center,start*k);
-            context.lineTo(modalEndH,modalEndW);
-            context.fillStyle  = obj_array[n].getColor();
-            context.fillRect(new_center, start*k, width,  h);
+            about = new About();
 
+            if(n ==0){
+                context.strokeRect(80, start*k+10, dx+20,  dy+10);
+                context.fillText (name,85,start*k+15);
+                context.moveTo(new_center,start*k);
+                context.lineTo(100+dx,start*k+10);
+                about.setAboutStart(start*k);
+                about.setAboutEnd(start*k+dy+10);
+                about.setAboutY(start*k+dy+15);
+                modal_arr[0]=about;
+            }else{
+              var new_y= buildAbout(context, start * k,modal_arr);
+                if(n% 2 === 0  ){
+                    x = 80;
+                    context.moveTo(new_center,start*k);
+                    context.lineTo(x+dx+20,new_y);
+                }
+                else{
+                    x=800;
+                    context.moveTo(new_center+width,start*k);
+                    context.lineTo(x,new_y);
+                }
+
+                context.lineTo(x,new_y);
+
+                context.strokeRect(x, new_y, dx+20,  dy+10);
+                context.fillStyle = '#000000';
+                context.fillText (name,x+5,new_y+5);
+
+                about.setAboutStart(new_y);
+                about.setAboutEnd(new_y+dy);
+                about.setAboutY(new_y+dy);
+                modal_arr[n]=about;
+            }
+
+
+            context.fillStyle  = obj_array[n].getColor();
+
+            context.fillRect(new_center, start*k, width,  h);
             element = new Desc();
             element.setXStart(new_center);
             element.setXEnd(new_center+width);
@@ -116,7 +138,15 @@ function Draw(objects){
         context.stroke();
 
     };
-
+    function buildAbout(context,start,modal){
+        var return_data = start;
+        for(var i=0;i<modal.length;i++){
+            if(return_data>=modal[i].getAboutStart()&&return_data<=modal[i].getAboutEnd()){
+                return_data= modal[i].getAboutY();
+            }
+        }
+        return return_data;
+    }
     function checkParameters(width,height,min){
         if(width*k<=min)
             SetK(width,min);
@@ -142,9 +172,9 @@ function Draw(objects){
         var desc;
         for(var i=0;i<arr.length;i++){
             if(y>=arr[i].getY_Start()&&y<=arr[i].getY_End()){
-
-                if(x>=arr[i].getXStart()&&x<=arr[i].getXEnd())
+                if(x>=arr[i].getXStart()&&x<=arr[i].getXEnd()){
                     desc = arr[i].getDescroption();
+                }
             }
         }
         if(desc!='')
@@ -243,6 +273,30 @@ function Desc(){
     };
 
 }
+function About(){
+    var start;
+    var end;
+    var y;
+
+    this.setAboutStart = function(x) {
+        start = x;
+    };
+    this.getAboutStart = function(){
+        return start;
+    };
+    this.setAboutEnd = function(x) {
+        end = x;
+    };
+    this.getAboutEnd = function(){
+        return end;
+    };
+    this.setAboutY = function(x){
+        y = x;
+    }
+    this.getAboutY = function(){
+        return y;
+    }
+};
 
 
 
