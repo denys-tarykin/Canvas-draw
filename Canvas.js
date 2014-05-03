@@ -109,9 +109,6 @@ function Draw(objects){
                     context.moveTo(new_center+width,h/2);
                     context.lineTo(x,h/2);
                 }
-
-                //context.lineTo(x,new_y);
-
                 context.strokeRect(x, h/2, dx+20,  dy+10);
                 context.fillStyle = '#000000';
                 context.fillText (name,x+5,h/2+5);
