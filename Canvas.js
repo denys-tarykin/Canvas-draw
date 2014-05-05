@@ -1,9 +1,10 @@
 function init(objects) {
     var canvas = document.getElementById("myCanvas");
     canvas.width = 1024;
-    canvas.height = 1280;
     var context = canvas.getContext("2d");
     var field = new Draw(objects);
+    field.CreateObjects()
+    canvas.height =field.getHeight()+50;
     field.draw(context);
 
     canvas.onmousemove = function(e) {
@@ -36,8 +37,7 @@ function Draw(objects){
     var right_modal_arr = [];
     var heights = [];
 
-
-    this.draw = function(context){
+    this.CreateObjects = function(){
         for(var j=0;j<objects.length;j++){
             obj = new DrawObj();
             start =objects[j].start;
@@ -52,6 +52,11 @@ function Draw(objects){
             checkParameters(objects[j].width,h,15);
             setMaxH(objects[j].end);
         }
+    };
+    this.getHeight = function(){
+        return MaxH*k;
+    };
+    this.draw = function(context){
 
         context.font = 'italic 15px sans-serif';
         context.textBaseline = 'top';
@@ -98,7 +103,6 @@ function Draw(objects){
                 about.setAboutEnd(h/2+dy+10);
                 about.setAboutY(h/2+dy+20);
                 left_modal_arr[0]=about;
-                console.log(h/2+15);
             }else{
                 if(n% 2 === 0  ){
                     var new_y= buildAbout(h/2,left_modal_arr,dy);
