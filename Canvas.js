@@ -122,8 +122,8 @@ function Draw(objects){
                     }
                     else
                        var new_y= buildAbout(h/2,right_modal_arr,dy);
-                    context.moveTo(new_center+width,h/2);
-                    context.lineTo(x,h/2);
+                    context.moveTo(new_center+width,new_y);
+                    context.lineTo(x,new_y);
                     about.setAboutStart(new_y);
                     about.setAboutEnd(new_y+dy);
                     about.setAboutY(new_y+dy+20);
